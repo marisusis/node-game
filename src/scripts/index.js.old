@@ -1,0 +1,60 @@
+// (function() {
+var socket = io();
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+
+var keys = {};
+var cursors = {};
+var clients = {};
+var players = {};
+var player = {
+  x: 0,
+  y: 0
+}
+
+
+var id = Math.round($.now() * Math.random());
+
+$(document).on({
+  keydown: function(e) {
+    keys[e.which] = true;
+  },
+  keyup: function(e) {
+    keys[e.which] = false;
+  }
+});
+
+
+function render() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if(keys[37]) {
+    player.x++;
+    socket.emit('move', {
+      'id': id,
+      'x': player.x,
+      'y': player.y
+    });
+  }
+  ctx.fillRect(player.x, player.y, 10, 10);
+  for(var i in clients) {
+    ctx.fillRect(clients[i].x, clients[i].y, 10, 10);
+  }
+  window.requestAnimationFrame(render);
+}
+
+render();
+
+socket.on('move', function(data) {
+  if(!(data.id in clients)) {
+    // a new user has come online. create a cursor for them
+    clients[data.id] = data;
+  }
+
+  clients[data.id] = data;
+
+  for(var i in clients) {
+    //     console.log(clients[i]);
+  }
+});
+// })();
