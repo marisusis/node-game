@@ -63,6 +63,7 @@
     COLOR = {
       BLACK: '#000000',
       YELLOW: '#ECD078',
+      YELLOWL: '#EC78d0',
       BRICK: '#D95B43',
       PINK: '#C02942',
       PURPLE: '#542437',
@@ -298,7 +299,7 @@
   function renderPlayer(ctx, dt) {
     ctx.fillStyle = COLOR.YELLOW;
     ctx.fillRect(player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
-
+    ctx.fillStyle=COLOR.YELLOWL;
     for(var i in clients) {
       ctx.fillRect(clients[i].x, clients[i].y, TILE, TILE);
     }
@@ -440,7 +441,7 @@
       //     console.log(clients[i]);
     }
   });
-  get("/-/js/level.json", function(req) {
+  get("/-/js/level.js", function(req) {
     setup(JSON.parse(req.responseText));
     frame();
   });
